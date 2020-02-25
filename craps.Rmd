@@ -1,0 +1,35 @@
+---
+title: "Craps"
+author: "David Kane"
+date: "2/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+# Functions We Need
+
+```{r}
+roll_one_die <- function(){
+  sample(1:6, size = 1)
+}
+
+
+roll_two_dice <- function(){
+  roll_one_die() + roll_one_die()
+}
+
+```
+
+You will probably want to put your results in a tibble, since that is what ggplot wants.
+
+
+```{r}
+map_int(1:10, ~ roll_two_dice())
+```
+
+
