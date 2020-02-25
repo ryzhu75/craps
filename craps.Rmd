@@ -6,30 +6,56 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 library(tidyverse)
 ```
 
 
 # Functions We Need
 
-```{r}
+```{r functions}
+# Helper functions which we need in order to do the simulation later. Don't
+# really need a function to roll one die.
+
 roll_one_die <- function(){
   sample(1:6, size = 1)
 }
 
+# Would have been easier to write this by just calling sample() twice (although
+# be wary of the replace argument) but Preceptor made us do it this way.
 
 roll_two_dice <- function(){
   roll_one_die() + roll_one_die()
 }
+```
+
+
+
+```{r check_results}
+# Run the roll_two_dice() function a lot of times. Then, create a graphic of the
+# results. If this matches our intuition, that is evidence that our functions
+# are behaving correctly. I need to put the results in a tibble, since that is
+# what ggplot wants.
+
+
+x <- tibble(results = map_int(1:10000, ~ roll_two_dice()))
+
+# Once I have a tibble, the standard ggplot works. Would be nice to have the
+# x-axis labels corresponding to the actual roll values, like 2, 3 and so on.
+# Need tyo figure out a way to get the stats_bin warning (or is it a message?)
+# to disappear. If I just turn it off in the code chunk, I will be penalized.
+
+x %>% 
+  ggplot(aes(results)) +
+    geom_bar()
 
 ```
 
-You will probably want to put your results in a tibble, since that is what ggplot wants.
+
+```{r simulation}
+# Assume that John Mark is honest. Yeah! How surprising is it to roll 6 winners?
+# How unusual is it to win against Ishan 4 to 0?
 
 
-```{r}
-map_int(1:10, ~ roll_two_dice())
 ```
-
 
