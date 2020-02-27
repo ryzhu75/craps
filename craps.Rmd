@@ -11,7 +11,9 @@ library(tidyverse)
 ```
 
 
-# Functions We Need
+## Simulating a Simple Game of Craps
+
+We will simulate a honest (albeit simplified) game of Craps. If no one is cheating, we would expect the actual results to be "consistent" with our simulation. If the actual results are "surprising," then our model has failed to capture some aspect of the world. Specifically, we assumed an honest game in making the model. Is the data (Ishan beat John Mark 4 to 0) consistent with that assumption?
 
 ```{r functions}
 # Helper functions which we need in order to do the simulation later. Don't
@@ -29,16 +31,18 @@ roll_two_dice <- function(){
 }
 ```
 
+## Model Checking
 
+Does the code for rolling dice work? One way to check is to see if a simulation matches what we "know" to be the truth.
 
-```{r check_results}
+```{r check_results, cache=TRUE}
 # Run the roll_two_dice() function a lot of times. Then, create a graphic of the
 # results. If this matches our intuition, that is evidence that our functions
 # are behaving correctly. I need to put the results in a tibble, since that is
 # what ggplot wants.
 
 
-x <- tibble(results = map_int(1:10000, ~ roll_two_dice()))
+x <- tibble(results = map_int(1:100000, ~ roll_two_dice()))
 
 # Once I have a tibble, the standard ggplot works. Would be nice to have the
 # x-axis labels corresponding to the actual roll values, like 2, 3 and so on.
@@ -47,7 +51,12 @@ x <- tibble(results = map_int(1:10000, ~ roll_two_dice()))
 
 x %>% 
   ggplot(aes(results)) +
-    geom_bar()
+    geom_histogram(bins = 30) +
+    labs(title = "Simulated Results from 100,000 Paired Dice Rolls",
+         subtitle = "Distribution matches our expectation",
+         x = "Sum of Two Rolled Dice",
+         y = "Count")  +
+    scale_x_continuous(breaks = 2:12)
 
 ```
 
