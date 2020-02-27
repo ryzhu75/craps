@@ -1,1 +1,3 @@
-# class-2020-02-25
+# Craps
+
+Class coding exercise for Gov 1005: Data at Harvard University.
